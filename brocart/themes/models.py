@@ -1,3 +1,8 @@
 from django.db import models
 
-# Create your models here.
+# Theme model
+
+class Theme (models.Model) :
+
+    banner = models.ImageField(upload_to = 'themes/')
+    caption = models.TextField()
