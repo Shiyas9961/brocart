@@ -1,0 +1,43 @@
+{% extends "layouts/blank_layout.html" %}
+
+{% block content %}
+    {% load static %}
+    {% load chunks %}
+    <div class="small-container">
+        <div class="row row-2">
+            <h2>All Products</h2>
+        </div>
+        
+        {% for prod_chunk in products|chunks:4 %}
+        
+            <div class="row">
+                {% for prod in prod_chunk %}
+                    <div class="col-4">
+                        <a href="{% url 'single_product' prod.id %}"><img src="{{ prod.image.url }}"></a>
+                        <h4>{{ prod.title }}</h4>
+                        <div class="rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o"></i>
+                        </div>
+                        <p>${{ prod.price }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+        <div class="page-btn">
+            {% if products.has_previous %}
+                <a href="?page={{products.previous_page_number}}"><span><<</span></a>
+            {% endif %}
+            {% for page_no in products.paginator.page_range %}
+                <a href="?page={{page_no}}"><span>{{page_no}}</span></a>
+            {% endfor %}
+            {% if products.has_next %}
+                <a href="?page={{products.next_page_number}}"><span>>></span></a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,70 @@
+{% extends "layouts/blank_layout.html" %}
+
+{% block content %}
+    {% load static %}
+    {% load multiply %}
+    {% load total_amount %}
+    <div class="small-container cart-page">
+        {% if messages %}
+            {% for message in messages %}
+                <div>
+                    <p style="text-align:center;" class="{{message.tags}}">{{message}}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            {% if cart and cart.order_details.all %}
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Subtotal</th>
+                        </tr>
+                        {% for cart_item in cart.order_details.all %}
+                            <tr>
+                                <td>
+                                    <div class="cart-info">
+                                        <img src="{{cart_item.product.image.url}}">
+                                        <div>
+                                            <p>{{cart_item.product.title}}</p>
+                                            <small>Price: ${{cart_item.product.price}}</small>
+                                            <br>
+                                            <a href="{% url 'remove_item' cart_item.id %}">Remove</a>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><input type="number" disabled value="{{cart_item.quantity}}"></td>
+                                <td>${% multiply cart_item.product.price cart_item.quantity %}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div class="total-price">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td colspan = "1"></td>
+                                <td>Total</td>
+                                <td>${% total_amount cart %}</td>
+                            </tr>
+                            <tr>
+                                <td colspan = "2"></td>
+                                <td>
+                                    <form action="{% url 'checkout' %}" method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="total" value="{% total_amount cart %}">
+                                        <button type="submit" class="btn" id="btn-cart">Checkout</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div>
+                    <p style="text-align:center;">Cart is Empty</p>
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+{% endblock content %}

@@ -1,0 +1,80 @@
+{% extends "layouts/blank_layout.html" %}
+
+{% block banner %}
+    {% load static %}
+    <div class="account-page">
+        <div class="container">
+            <div class="row">
+                <div class="col-2">
+                    <img src="{% static 'images/image1.png' %}" width="100%">
+                </div>
+                <div class="col-2">
+                    {% if messages %}
+                        <div class="error-container">
+                            {% for message in messages %}
+                                <p class="{{message.tags}}">{{message}}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    <div class="form-container">
+                        <div class="form-btn">
+                            <span onclick="login()">Login</span>
+                            <span onclick="register()">Register</span>
+                            <hr id="Indicator" style="transform: translateX(100px);">
+                        </div>
+
+                        <form id="LoginForm" style="transform: translateX(0px);" method="post" enctype="multipart/form-data">
+                            <input type="text" required name="username" placeholder="Username">
+                            <input type="password" required name="password" placeholder="Password">
+
+                            <button type="submit" name="login" class="btn">Login</button>
+                            <a href="">Forget Password</a>
+                            {% csrf_token %}
+                        </form>
+
+                        <form id="RegForm" style="transform: translateX(0px);" method="post" enctype="multipart/form-data">
+                            <input type="text" required maxlength="10" minlength="4" name="username" placeholder="Username">
+                            <input type="email" required name="email" placeholder="Email">
+                            <input type="text" required name="address" placeholder="Address">
+                            <input type="tel" required name="phone" placeholder="Phone">
+                            <input type="password" minlength="4" name="password" placeholder="Password">
+
+                            <button type="submit" name="register" class="btn">Register</button>
+                            {% csrf_token %}
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock banner %}
+
+{% block extra_scripts %}
+    <script>
+        var LoginForm = document.getElementById("LoginForm");
+        var RegForm = document.getElementById("RegForm");
+        var Indicator = document.getElementById("Indicator");
+        function register() {
+            RegForm.style.transform = "translatex(0px)";
+            LoginForm.style.transform = "translatex(0px)";
+            Indicator.style.transform = "translateX(100px)";
+
+        }
+        function login() {
+            RegForm.style.transform = "translatex(300px)";
+            LoginForm.style.transform = "translatex(300px)";
+            Indicator.style.transform = "translate(0px)";
+
+        }
+    </script>
+    {% if register %}
+            <script>
+                register()
+            </script>
+        {% else %}
+            <script>
+                login()
+            </script>
+    {% endif %}
+{% endblock extra_scripts %}

@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BroCart | Ecommerce Website Design </title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <div class="header">
+        <div class="container">
+            <div class="navbar">
+                    <div class="logo">
+                        <a href="{% url 'home' %}"><img src="{% static 'images/logo.png' %}" alt="logo" width="125px"></a>
+                    </div>
+                {% include 'layouts/menu.html' %}
+                {% if user.is_authenticated %}
+                    <a href="{% url 'cart' %}"><img src="{% static 'images/cart.png' %}" width="30px" height="30px"></a>
+                {% endif %}
+                <img src="{% static 'images/menu.png' %}" class="menu-icon" onclick="menutoggle()">
+            </div>
+            {% block banner %}
+                
+            {% endblock banner %}
+    
+        </div>
+    </div>
+
+    {% block content %}
+        
+    {% endblock content %}
+
+    <!-- Footer -->
+    {% include 'layouts/footer.html' %}
+
+    <!-- javascript -->
+
+    <script>
+        var MenuItems = document.getElementById("MenuItems");
+        MenuItems.style.maxHeight = "0px";
+        function menutoggle() {
+            if (MenuItems.style.maxHeight == "0px") {
+                MenuItems.style.maxHeight = "200px"
+            }
+            else {
+                MenuItems.style.maxHeight = "0px"
+            }
+        }
+    </script>
+
+    {% block extra_scripts %}
+    
+    {% endblock extra_scripts %}
+
+</body>
+
+</html>
